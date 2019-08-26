@@ -1,5 +1,8 @@
 const express = require('express');
 
+const Ajv = require('ajv');
+const ajv = new Ajv();
+
 const router = express.Router();
 const {
   getAssets,
@@ -9,6 +12,17 @@ const {
   addAsset,
   removeAsset,
 } = require('./assetModel');
+
+const schema = {
+  type: 'object',
+  required: ['assetId', 'name', 'dimension', 'status'],
+  properties: {
+    assetId: { type: 'string', minLength : 1 },
+    name: { type: 'string', minLength : 1 },
+    dimension: { type: 'string', minLength : 1 },
+    status: { type: 'string', minLength : 1 }
+  }
+} 
 
 // GET all assets for shopping centre :id
 router.get('/:id/assets', async function(req, res) {
@@ -26,6 +40,12 @@ router.get('/assets/:assetId?', async function(req, res) {
 
 // POST to add a new asset in a shopping centre(id)
 router.post('/:id/assets/add', async function(req, res) {
+  const valid = ajv.validate(schema, req.body);
+  if (!valid) {
+    console.log(ajv.errors);
+    return res.status(400).send();
+  }
+
   const userId = req.user && req.user.userId; // Retrieve the userId from jwt token.
   const params = [
     req.body.assetId,
