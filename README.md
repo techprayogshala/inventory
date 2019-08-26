@@ -116,5 +116,10 @@ METHOD: GET
 URL:    http://localhost:3000/api/shopping-centre/{shoppingCentreId}
 
 ```
+To fetch the list of users:
+```
+METHOD: GET
+URL:    http://localhost:3000/api/users
 
+```
 

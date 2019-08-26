@@ -44,7 +44,7 @@ function createAssets() {
 }
 
 function createUsers() {
-  db.run('CREATE TABLE User (user_id TEXT, name TEXT, username TEXT, password TEXT, email TEXT)');
+  db.run('CREATE TABLE user (user_id TEXT, name TEXT, username TEXT, password TEXT, email TEXT)');
 
   const stmt = db.prepare('INSERT INTO User VALUES (?, ?, ?, ?, ?)');
   for (let i = 0; i < 10; i++) {
